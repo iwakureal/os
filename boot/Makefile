@@ -5,7 +5,10 @@ NASM = nasm
 LD = ld
 
 boot.bin: $(OBJECTS)
-	$(LD) -o $@ -T link.ld --oformat binary $^
+	$(LD) -o $@ -T link.ld -m elf_i386 --oformat binary $^
 
 %.o: %.asm
-	$(NASM) $< -f elf64 -o $@
+	$(NASM) $< -f elf32 -o $@
+
+clean:
+	rm -rf $(OBJECTS) *.bin
