@@ -52,12 +52,16 @@ namespace registers {
 
 	uint8_t read(register_t reg);
 	void write(register_t reg, uint8_t value);
+
 } // namespace vga::registers
 
 namespace cursor {
 	int get();
 	void set(int cursor);
+
 } // namespace vga::cursor
+
+void clear();
 
 int puts(char *str);
 int putc(char c);
