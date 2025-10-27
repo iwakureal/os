@@ -4,8 +4,10 @@
 #include "cpu/idt.h"
 #include "cpu/isr.h"
 
-void the_problem() {
+void commence_idt_torture() {
 	asm("int $3");
+	asm("int $0");
+	asm("int $7");
 }
 
 extern "C" void kmain() {
@@ -13,14 +15,13 @@ extern "C" void kmain() {
 	vga::clear(color);
 	vga::puts("Hello, world!\n");
 
-	idt::descriptor_t desc = {
-		256 * sizeof(idt::gate_t) - 1,
-		(uint32_t)idt::idt
-	};
+	idt::descriptor_t desc;
+	desc.size = 256 * sizeof(idt::gate_t) - 1;
+	desc.offset = (uint32_t)idt::idt;
 
 	isr::init_default();
 	idt::lidt(&desc);
 
-	vga::puts("\x02 Finished IDT setup!!!");
-	the_problem();
+	vga::puts("\x02 Finished IDT setup!!! Now let's torture it\n");
+	commence_idt_torture();
 }

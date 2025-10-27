@@ -14,7 +14,7 @@ void set_gate(int n, uint32_t handler) {
 }
 
 void lidt(descriptor_t* descriptor) {
-	__asm__ volatile("lidtl (%0)" : : "r" (descriptor));
+	__asm__ volatile("lidt %0" : : "m" (*descriptor));
 }
 
 

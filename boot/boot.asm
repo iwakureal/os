@@ -31,14 +31,8 @@ _start:
 	mov di, 0x7e00
 	int 10h
 
+	; load gdt
 	lgdt [gdt_descriptor]
-
-	mov ax, GDT_DATA
-	mov ds, ax
-	mov ss, ax
-	mov es, ax
-	mov fs, ax
-	mov gs, ax
 
 	; enable a20
 	in al, 0x92
@@ -49,6 +43,16 @@ _start:
 	mov eax, cr0
 	or eax, 0x1
 	mov cr0, eax
+
+	; load segments
+	mov ax, GDT_DATA
+	mov ds, ax
+	mov ss, ax
+	mov es, ax
+	mov fs, ax
+	mov gs, ax
+
+	; jump to kernel
 	jmp GDT_CODE:KERNEL_OFFSET
 
 error:

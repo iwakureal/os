@@ -5,7 +5,7 @@
 
 namespace idt {
 
-const int CS = 0x08;
+inline constexpr int CS = 0x08;
 
 struct descriptor_t {
 	uint16_t size;
