@@ -33,6 +33,13 @@ _start:
 
 	lgdt [gdt_descriptor]
 
+	mov ax, GDT_DATA
+	mov ds, ax
+	mov ss, ax
+	mov es, ax
+	mov fs, ax
+	mov gs, ax
+
 	; enable a20
 	in al, 0x92
 	or al, 2

@@ -17,7 +17,7 @@ struct gate_t {
 	uint16_t selector;
 	uint8_t : 8; /* reserved */
 	uint8_t flags;
-	uint8_t offset_high;
+	uint16_t offset_high;
 } __attribute__((packed));
 
 extern gate_t idt[256];
