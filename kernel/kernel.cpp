@@ -4,6 +4,10 @@
 #include "cpu/idt.h"
 #include "cpu/isr.h"
 
+void the_problem() {
+	asm("int $3");
+}
+
 extern "C" void kmain() {
 	vga::attribute_t color = {vga::color::light_green, vga::color::black};
 	vga::clear(color);
@@ -18,4 +22,5 @@ extern "C" void kmain() {
 	idt::lidt(&desc);
 
 	vga::puts("\x02 Finished IDT setup!!!");
+	the_problem();
 }

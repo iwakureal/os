@@ -12,7 +12,7 @@ struct frame_t {
 };
 
 void init_default();
-void default_handler();
+void default_handler(frame_t* frame);
 
 
 } /* namespace isr */

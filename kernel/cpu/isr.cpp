@@ -46,14 +46,25 @@ const char *exceptions[] = {
 };
 
 void init_default() {
-	for (int i = 0; i < 32; i++) {
-		idt::set_gate(i, reinterpret_cast<void(*)()>(0));
+	for (int i = 0; i < 47; i++) {
+		idt::set_gate(i, reinterpret_cast<uint32_t>(&default_handler));
 	}
+
+	io::out(0x20, 0x11);
+	io::out(0xA0, 0x11);
+	io::out(0x21, 0x20);
+	io::out(0xA1, 0x28);
+	io::out(0x21, 0x04);
+	io::out(0xA1, 0x02);
+	io::out(0x21, 0x01);
+	io::out(0xA1, 0x01);
+	io::out(0x21, 0x0);
+	io::out(0xA1, 0x0);
 }
-/*
+
 __attribute__((interrupt))
-void default_handler() {
+void default_handler(frame_t* frame) {
 	vga::puts("!!! Received interrupt, no idea which");
-}*/
+}
 
 } /* namespace isr */

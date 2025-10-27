@@ -2,7 +2,6 @@
 #define IDT_H
 
 #include <cstdint>
-#include "isr.h"
 
 namespace idt {
 
@@ -23,7 +22,7 @@ struct gate_t {
 
 extern gate_t idt[256];
 
-void set_gate(int n, void (*handler)(void));
+void set_gate(int n, uint32_t handler);
 void lidt(descriptor_t* descriptor);
 
 } /* namespace idt */
