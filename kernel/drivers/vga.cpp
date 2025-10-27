@@ -1,13 +1,12 @@
 #include "vga.h"
 
-#include <stdint.h>
-#include <stdbool.h>
-#
+#include <cstdint>
+
 #include "cpu/io.h"
 
 namespace vga {
 
-volatile cell_t (&text_memory)[80*25] = *reinterpret_cast<volatile cell_t (*)[80*25]>(TEXT_MEMORY);
+cell_t* const text_memory = reinterpret_cast<cell_t*>(TEXT_MEMORY);
 
 namespace registers {
 
@@ -36,16 +35,17 @@ namespace cursor {
 
 } // namespace vga::cursor
 
-void clear() {
-	for (auto& cell : text_memory) {
-		cell.character = ' ';
+void clear(attribute_t attr) {
+	for (int i = 0; i < 80*25; i++) {
+		text_memory[i].character = ' ';
+		text_memory[i].attribute = attr;
 	}
 	cursor::set(0);
 }
 
-int puts(char *str) {
+int puts(const char *str) {
 	int i = 0;
-	int offset;
+	int offset = cursor::get();
 	while (str[i] != 0) {
 		offset = putc(str[i++]);
 	}

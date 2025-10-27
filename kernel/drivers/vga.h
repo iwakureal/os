@@ -1,7 +1,7 @@
 #ifndef VGA_H
 #define VGA_H
 
-#include <stdint.h>
+#include <cstdint>
 
 namespace vga {
 
@@ -37,7 +37,7 @@ struct cell_t {
 	attribute_t attribute;
 } __attribute__((packed));
 
-extern volatile cell_t (&text_memory)[80*25];
+extern cell_t* const text_memory;
 
 namespace registers {
 	enum io_t : uint16_t {
@@ -61,9 +61,9 @@ namespace cursor {
 
 } // namespace vga::cursor
 
-void clear();
+void clear(attribute_t attr);
 
-int puts(char *str);
+int puts(const char *str);
 int putc(char c);
 
 } // namespace vga
