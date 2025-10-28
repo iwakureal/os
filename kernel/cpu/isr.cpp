@@ -17,6 +17,7 @@ const char *exceptions[] = {
 	"Out of bounds",
 	"Invalid opcode",
 	"x87 FPU unavailable",
+
 	"Double fault",
 	"Coprocessor segment overrun",
 	"Invalid TSS",
@@ -33,15 +34,15 @@ const char *exceptions[] = {
 	"Virtualization exception",
 	"Control protection exception",
 	"Reserved",
-	"Hypervisor injection exception",
+	"Reserved",
 
+	"Reserved",
+	"Reserved",
+	"Reserved",
+	"Reserved",
+	"Hypervisor injection exception",
 	"VMM communication exception",
 	"Security exception",
-	"Reserved",
-	"Reserved",
-	"Reserved",
-	"Reserved",
-	"Reserved",
 	"Reserved"
 };
 
@@ -62,11 +63,16 @@ void init_default() {
 	io::out(0xA1, 0x0);
 }
 
-/*
-__attribute__((interrupt, target("general-regs-only")))
-void default_handler(frame_t* frame) {
+
+extern "C" void default_handler(frame_t frame) {
 	vga::puts("!!! Received interrupt: ");
+
+	if (frame.int_num > 32) {
+		vga::puts("<unknown>");
+	} else {
+		vga::puts(exceptions[frame.int_num]);
+	}
+	vga::puts("\n");
 }
-*/
 
 } /* namespace isr */

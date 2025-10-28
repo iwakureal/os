@@ -5,9 +5,16 @@
 #include "cpu/isr.h"
 
 void commence_idt_torture() {
-	asm("int $3");
 	asm("int $0");
+	asm("int $1");
+	asm("int $2");
+	asm("int $3");
+	asm("int $4");
+	asm("int $5");
+	asm("int $6");
 	asm("int $7");
+//	asm("int $8");
+	asm("int $9");
 }
 
 extern "C" void kmain() {
@@ -22,6 +29,6 @@ extern "C" void kmain() {
 	isr::init_default();
 	idt::lidt(&desc);
 
-	vga::puts("\x02 Finished IDT setup!!! Now let's torture it\n");
+	vga::puts("\x02 Finished IDT setup!!! Now let's torture it with a bunch of interrupts\n");
 	commence_idt_torture();
 }

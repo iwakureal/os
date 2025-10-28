@@ -14,8 +14,26 @@ isr_%1:
 %endmacro
 
 isr_common_entry:
-	pop ebx
-	pop ebx
+	pusha
+	mov ax, ds
+	push eax
+	mov ax, 0x10
+	mov ds, ax
+	mov es, ax
+	mov fs, ax
+	mov gs, ax
+
+	cld
+	[extern default_handler]
+	call default_handler
+
+	pop eax
+	mov ds, ax
+	mov es, ax
+	mov fs, ax
+	mov gs, ax
+	popa
+	add esp, 8 ; pop error code and int num without popping :)
 	iret
 
 global stub_table
