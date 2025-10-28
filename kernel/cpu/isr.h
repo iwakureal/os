@@ -11,10 +11,10 @@ struct frame_t {
 	uint32_t eip, cs, eflags;
 } __attribute__((packed));
 
-extern "C" uint8_t stub_table[];
+extern "C" uint32_t stub_table[];
 
 void init_default();
-void default_handler(frame_t* frame);
+//void default_handler(frame_t* frame);
 
 
 } /* namespace isr */

@@ -46,10 +46,8 @@ const char *exceptions[] = {
 };
 
 void init_default() {
-	uint32_t handler = reinterpret_cast<uint32_t>(&stub_table);
 	for (int i = 0; i < 47; i++) {
-		handler = i * 9;
-		idt::set_gate(i, handler);
+		idt::set_gate(i, stub_table[i]);
 	}
 
 	io::out(0x20, 0x11);
@@ -64,9 +62,11 @@ void init_default() {
 	io::out(0xA1, 0x0);
 }
 
+/*
 __attribute__((interrupt, target("general-regs-only")))
 void default_handler(frame_t* frame) {
 	vga::puts("!!! Received interrupt: ");
 }
+*/
 
 } /* namespace isr */
