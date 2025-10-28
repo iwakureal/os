@@ -6,10 +6,12 @@
 namespace isr {
 
 struct frame_t {
-	uint32_t eip;
-	uint32_t cs;
-	uint32_t eflags;
-};
+	uint32_t edi, esi, ebp, esp, ebx, edx, ecx, eax;
+	uint32_t int_num, error_code;
+	uint32_t eip, cs, eflags;
+} __attribute__((packed));
+
+extern "C" uint8_t stub_table[];
 
 void init_default();
 void default_handler(frame_t* frame);
