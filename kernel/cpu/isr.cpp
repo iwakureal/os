@@ -47,7 +47,7 @@ const char *exceptions[] = {
 };
 
 void init_default() {
-	for (int i = 0; i < 47; i++) {
+	for (int i = 0; i < 256; i++) {
 		idt::set_gate(i, stub_table[i]);
 	}
 
@@ -67,7 +67,7 @@ void init_default() {
 extern "C" void default_handler(frame_t frame) {
 	vga::puts("!!! Received interrupt: ");
 
-	if (frame.int_num > 32) {
+	if (frame.int_num > 31) {
 		vga::puts("<unknown>");
 	} else {
 		vga::puts(exceptions[frame.int_num]);

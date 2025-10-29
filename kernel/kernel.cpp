@@ -13,8 +13,8 @@ void commence_idt_torture() {
 	asm("int $5");
 	asm("int $6");
 	asm("int $7");
-//	asm("int $8");
 	asm("int $9");
+	asm("int $255");
 }
 
 extern "C" void kmain() {
