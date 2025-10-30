@@ -6,7 +6,9 @@
 namespace timer {
 
 
-void init(uint16_t freq);
+inline constexpr uint32_t BASE_CLOCK = 1193182;
+
+void init(volatile uint32_t freq);
 
 
 } // namespace timer

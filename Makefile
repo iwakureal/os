@@ -5,7 +5,7 @@ KERNEL_SOURCES = $(shell find kernel -name '*.cpp' -o -name '*.asm')
 KERNEL_OBJECTS := $(patsubst %.cpp,%.o,$(patsubst %.asm,%.oo,$(KERNEL_SOURCES)))
 
 COMPILER = g++
-CFLAGS = -g -ffreestanding -mno-red-zone -mno-sse -mno-sse2 -mno-mmx -mno-80387 -fno-pie -m32 -I./kernel -O1 -Wall -Wextra
+CFLAGS = -g -ffreestanding -mno-red-zone -mno-sse -mno-sse2 -mno-mmx -mno-80387 -fno-pie -m32 -I./kernel -Og -Wall -Wextra
 
 NASM = nasm
 LD = ld

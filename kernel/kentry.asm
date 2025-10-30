@@ -8,6 +8,5 @@ kentry:
 	[extern kmain]
 	call kmain
 
-	cli
 	hlt
 	jmp $

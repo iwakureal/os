@@ -6,9 +6,9 @@
 namespace timer {
 
 
-void init(uint16_t freq) {
-	uint32_t divisor = 1193180 / freq;
-	io::out(0x43, 0b00110110);
+void init(volatile uint32_t freq) {
+	uint32_t divisor = BASE_CLOCK / freq;
+	io::out(0x43, 0x36);
 	io::out(0x40, (uint8_t)(divisor & 0xFF));
 	io::out(0x40, (uint8_t)((divisor >> 8) & 0xFF));
 }

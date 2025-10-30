@@ -15,7 +15,6 @@ void commence_idt_torture() {
 	asm("int $6");
 	asm("int $7");
 	asm("int $9");
-	asm("int $32"); // me when I lie
 	asm("int $255");
 }
 
@@ -30,7 +29,7 @@ extern "C" void kmain() {
 
 	isr::init_default();
 	idt::lidt(&desc);
-	timer::init(50);
+	timer::init(1);
 
 	asm volatile("sti");
 
