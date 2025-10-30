@@ -6,7 +6,7 @@
 #include "cpu/timer.h"
 
 void commence_idt_torture() {
-/*	asm("int $0");
+	asm("int $0");
 	asm("int $1");
 	asm("int $2");
 	asm("int $3");
@@ -16,7 +16,7 @@ void commence_idt_torture() {
 	asm("int $7");
 	asm("int $9");
 	asm("int $32"); // me when I lie
-	asm("int $255");*/
+	asm("int $255");
 }
 
 extern "C" void kmain() {
@@ -31,6 +31,8 @@ extern "C" void kmain() {
 	isr::init_default();
 	idt::lidt(&desc);
 	timer::init(50);
+
+	asm volatile("sti");
 
 	vga::puts("\x02 Finished IDT setup!!! Now let's torture it with a bunch of interrupts\n");
 	commence_idt_torture();

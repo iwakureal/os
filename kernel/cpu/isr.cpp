@@ -88,17 +88,12 @@ void init_default() {
 	io::wait();
 	io::out(0xA1, 0x00);
 	io::wait();
-
-	asm volatile("sti");
 }
 
 extern "C" void default_handler(frame_t frame) {
 	int id = frame.int_num;
 	vga::puts("!!! Received interrupt: ");
 	if (id >= 32 && id < 48) {
-		if(id >= 40) io::out(0xA0, 0x20);
-		io::out(0x20, 0x20);
-
 		vga::puts("[IRQ] ");
 	}
 
@@ -108,6 +103,11 @@ extern "C" void default_handler(frame_t frame) {
 		vga::puts("<unknown>");
 	}
 	vga::puts("\n");
+
+	if (id >= 40) {
+		io::out(0xA0, 0x20);
+	}
+	io::out(0x20, 0x20);
 }
 
 } /* namespace isr */

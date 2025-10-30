@@ -15,7 +15,7 @@ QEMU = qemu-system-i386
 IMAGE_SIZE = 1048576
 
 run: os.img
-	$(QEMU) -hda $< -boot c -monitor stdio
+	$(QEMU) -hda $< -boot c -d int,nochain -monitor stdio
 
 debug: os.img kernel.elf
 	$(QEMU) -S -s -hda $< -boot c -d guest_errors,int &
