@@ -69,17 +69,27 @@ void init_default() {
 	}
 
 	io::out(0x20, 0x11);
+	io::wait();
 	io::out(0xA0, 0x11);
+	io::wait();
 	io::out(0x21, 0x20);
+	io::wait();
 	io::out(0xA1, 0x28);
+	io::wait();
 	io::out(0x21, 0x04);
+	io::wait();
 	io::out(0xA1, 0x02);
+	io::wait();
 	io::out(0x21, 0x01);
+	io::wait();
 	io::out(0xA1, 0x01);
-	io::out(0x21, 0x0);
-	io::out(0xA1, 0x0);
+	io::wait();
+	io::out(0x21, 0x00);
+	io::wait();
+	io::out(0xA1, 0x00);
+	io::wait();
 
-	asm("sti");
+	asm volatile("sti");
 }
 
 extern "C" void default_handler(frame_t frame) {

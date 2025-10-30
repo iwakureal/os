@@ -5,13 +5,13 @@
 
 namespace io {
 
-template <typename T, typename P> T in(P port) {
+template <typename T, typename P> inline T in(P port) {
 	T data;
 	asm volatile("in%z0 %1, %0" : "=a"(data) : "Nd"(static_cast<uint16_t>(port)));
 	return data;
 }
 
-template <typename T, typename P> void out(P port, T data) {
+template <typename T, typename P> inline void out(P port, T data) {
 	asm volatile("out%z0 %0, %1" : : "a"(data), "Nd"(static_cast<uint16_t>(port)));
 }
 

@@ -33,7 +33,7 @@ isr_common_entry:
 	mov fs, ax
 	mov gs, ax
 	popa
-	add esp, 8 ; pop error code and int num without popping :)
+	add esp, 8 ; pop error code and int num without touching registers
 	iret
 
 global stub_table
