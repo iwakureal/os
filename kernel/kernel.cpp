@@ -14,6 +14,7 @@ void commence_idt_torture() {
 	asm("int $6");
 	asm("int $7");
 	asm("int $9");
+	asm("int $32"); // me when I lie
 	asm("int $255");
 }
 

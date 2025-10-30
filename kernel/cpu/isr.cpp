@@ -43,7 +43,24 @@ const char *exceptions[] = {
 	"Hypervisor injection exception",
 	"VMM communication exception",
 	"Security exception",
-	"Reserved"
+	"Reserved",
+
+	"PIT",
+	"Keyboard",
+	"Cascade",
+	"COM2",
+	"COM1",
+	"LPT2",
+	"Floppy",
+	"LPT1",
+	"CMOS RTC",
+	"Peripheral 0",
+	"Peripheral 1",
+	"Peripheral 2",
+	"PS/2 Mouse",
+	"FPU",
+	"Primary ATA Disk",
+	"Secondary ATA Disk",
 };
 
 void init_default() {
@@ -61,16 +78,24 @@ void init_default() {
 	io::out(0xA1, 0x01);
 	io::out(0x21, 0x0);
 	io::out(0xA1, 0x0);
+
+	asm("sti");
 }
 
-
 extern "C" void default_handler(frame_t frame) {
+	int id = frame.int_num;
 	vga::puts("!!! Received interrupt: ");
+	if (id >= 32 && id < 48) {
+		if(id >= 40) io::out(0xA0, 0x20);
+		io::out(0x20, 0x20);
 
-	if (frame.int_num > 31) {
-		vga::puts("<unknown>");
+		vga::puts("[IRQ] ");
+	}
+
+	if (id < 48) {
+		vga::puts(exceptions[id]);
 	} else {
-		vga::puts(exceptions[frame.int_num]);
+		vga::puts("<unknown>");
 	}
 	vga::puts("\n");
 }
