@@ -5,7 +5,7 @@ KERNEL_SOURCES = $(shell find kernel -name '*.cpp' -o -name '*.asm')
 KERNEL_OBJECTS := $(patsubst %.cpp,%.o,$(patsubst %.asm,%.oo,$(KERNEL_SOURCES)))
 
 COMPILER = g++
-CFLAGS = -g -ffreestanding -mno-red-zone -mno-sse -mno-sse2 -mno-mmx -mno-80387 -fno-pie -m32 -I./kernel -Og -Wall -Wextra
+CFLAGS = -g -ffreestanding -fno-pie -fno-builtin -mno-red-zone -mno-sse -mno-sse2 -mno-mmx -mno-80387 -m32 -I./kernel -Og -Wall -Wextra
 
 NASM = nasm
 LD = ld
@@ -13,6 +13,8 @@ LD = ld
 QEMU = qemu-system-i386
 
 IMAGE_SIZE = 1048576
+
+all: os.img kernel.elf
 
 run: os.img
 	$(QEMU) -hda $< -boot c -d int,nochain -monitor stdio

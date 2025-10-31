@@ -1,6 +1,7 @@
 #include "vga.h"
 
 #include <cstdint>
+#include <cstring>
 
 #include "cpu/io.h"
 
@@ -11,13 +12,13 @@ cell_t* const text_memory = reinterpret_cast<cell_t*>(TEXT_MEMORY);
 namespace registers {
 
 	uint8_t read(register_t reg) {
-		io::out(CRTC_INDEX, reg);
-		return io::in<uint8_t>(CRTC_DATA);
+		io::outb(CRTC_INDEX, reg);
+		return io::inb(CRTC_DATA);
 	}
 
 	void write(register_t reg, uint8_t value) {
-		io::out(CRTC_INDEX, reg);
-		io::out(CRTC_DATA, value);
+		io::outb(CRTC_INDEX, reg);
+		io::outb(CRTC_DATA, value);
 	}
 
 } // namespace vga::registers

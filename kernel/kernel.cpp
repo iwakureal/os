@@ -30,8 +30,7 @@ extern "C" void kmain() {
 	isr::init_default();
 	idt::lidt(&desc);
 	timer::init(1);
-
-	asm volatile("sti");
+	asm("sti");
 
 	vga::puts("\x02 Finished IDT setup!!! Now let's torture it with a bunch of interrupts\n");
 	commence_idt_torture();
