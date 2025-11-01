@@ -9,6 +9,8 @@ namespace vga {
 
 cell_t* const text_memory = reinterpret_cast<cell_t*>(TEXT_MEMORY);
 
+attribute_t default_color = {color::light_grey, color::black};
+
 namespace registers {
 
 	uint8_t read(register_t reg) {
@@ -44,6 +46,18 @@ void clear(attribute_t attr) {
 	cursor::set(0);
 }
 
+void scroll() {
+	const cell_t empty = {' ', default_color};
+	for (int i = 0; i < 80 * 25; i++)
+	{
+		if (i >= 80 * 24)
+			text_memory[i] = empty;
+		else
+			text_memory[i] = text_memory[i + 80];
+	}
+	
+}
+
 int puts(const char *str) {
 	int i = 0;
 	int offset = cursor::get();
@@ -66,6 +80,11 @@ int putc(char c) {
 		default:
 			text_memory[offset].character = c;
 			offset++;
+	}
+
+	if (offset >= 80 * 25) {
+		scroll();
+		offset -= 80;
 	}
 
 	cursor::set(offset);

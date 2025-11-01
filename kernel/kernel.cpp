@@ -20,7 +20,8 @@ void commence_idt_torture() {
 
 extern "C" void kmain() {
 	vga::attribute_t color = {vga::color::light_green, vga::color::black};
-	vga::clear(color);
+	vga::default_color = color;
+	vga::clear();
 	vga::puts("Hello, world!\n");
 
 	idt::descriptor_t desc;
@@ -33,5 +34,5 @@ extern "C" void kmain() {
 	asm("sti");
 
 	vga::puts("\x02 Finished IDT setup!!! Now let's torture it with a bunch of interrupts\n");
-	commence_idt_torture();
+	//commence_idt_torture();
 }

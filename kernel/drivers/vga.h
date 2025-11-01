@@ -39,6 +39,8 @@ struct cell_t {
 
 extern cell_t* const text_memory;
 
+extern attribute_t default_color;
+
 namespace registers {
 	enum io_t : uint16_t {
 		CRTC_INDEX = 0x3D4,
@@ -61,7 +63,7 @@ namespace cursor {
 
 } // namespace vga::cursor
 
-void clear(attribute_t attr);
+void clear(attribute_t attr = default_color);
 
 int puts(const char *str);
 int putc(char c);
