@@ -1,10 +1,10 @@
 BOOT_SOURCES = $(shell find boot -name '*.asm')
 BOOT_OBJECTS := $(patsubst %.asm,%.oo,$(BOOT_SOURCES))
 
-KERNEL_SOURCES = $(shell find kernel -name '*.cpp' -o -name '*.asm')
-KERNEL_OBJECTS := $(patsubst %.cpp,%.o,$(patsubst %.asm,%.oo,$(KERNEL_SOURCES)))
+KERNEL_SOURCES = $(shell find kernel -name '*.c' -o -name '*.asm')
+KERNEL_OBJECTS := $(patsubst %.c,%.o,$(patsubst %.asm,%.oo,$(KERNEL_SOURCES)))
 
-COMPILER = g++
+COMPILER = gcc
 CFLAGS = -g -ffreestanding -fno-pie -fno-builtin -mno-red-zone -mno-sse -mno-sse2 -mno-mmx -mno-80387 -m32 -I./kernel -Og -Wall -Wextra
 
 NASM = nasm
@@ -36,7 +36,7 @@ kernel.bin: $(KERNEL_OBJECTS)
 kernel.elf: $(KERNEL_OBJECTS)
 	$(LD) --verbose -o $@ -T kernel/link.ld -m elf_i386 $^
 
-%.o: %.cpp
+%.o: %.c
 	$(COMPILER) $(CFLAGS) -c $< -o $@
 
 %.oo: %.asm

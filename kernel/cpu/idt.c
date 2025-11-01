@@ -1,21 +1,16 @@
 #include "idt.h"
 
-#include <cstdint>
+#include <stdint.h>
 
-namespace idt {
+idt_gate_t idt[256];
 
-gate_t idt[256];
-
-void set_gate(int n, uint32_t handler) {
+void idt_set_gate(int n, uint32_t handler) {
 	idt[n].offset_low = (uint16_t)(handler & 0xFFFF);
 	idt[n].selector = CS;
 	idt[n].flags = 0b10001110;
 	idt[n].offset_high = (uint16_t)(handler >> 16);
 }
 
-void lidt(descriptor_t* descriptor) {
+void lidt(idt_descriptor_t* descriptor) {
 	asm volatile("lidt %0" : : "m" (*descriptor));
 }
-
-
-} /* namespace idt */

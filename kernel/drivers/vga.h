@@ -1,14 +1,12 @@
 #ifndef VGA_H
 #define VGA_H
 
-#include <cstdint>
+#include <stdint.h>
 
-namespace vga {
+#define TEXT_MEMORY 0xB8000
 
-const int VIDEO_MEMORY = 0xA0000;
-const int TEXT_MEMORY = 0xB8000;
-
-enum class color : uint8_t {
+typedef enum
+{
 	black,
 	blue,
 	green,
@@ -16,7 +14,7 @@ enum class color : uint8_t {
 	red,
 	magenta,
 	brown,
-	light_grey,	// default
+	light_grey, // default
 	grey,
 	light_blue,
 	light_green,
@@ -25,49 +23,44 @@ enum class color : uint8_t {
 	light_magenta,
 	light_yellow,
 	white
-};
+} vga_color;
 
-struct attribute_t {
-	color foreground : 4;
-	color background : 4;
-} __attribute__((packed));
+typedef struct __attribute__((packed))
+{
+	vga_color foreground : 4;
+	vga_color background : 4;
+} vga_attribute_t;
 
-struct cell_t {
+typedef struct __attribute((packed))
+{
 	char character;
-	attribute_t attribute;
-} __attribute__((packed));
+	vga_attribute_t attribute;
+} vga_cell_t;
 
-extern cell_t* const text_memory;
+extern vga_cell_t *const text_memory;
+extern vga_attribute_t vga_default_color;
 
-extern attribute_t default_color;
+typedef enum
+{
+	CRTC_INDEX = 0x3D4,
+	CRTC_DATA = 0x3D5
+} io_t;
 
-namespace registers {
-	enum io_t : uint16_t {
-		CRTC_INDEX = 0x3D4,
-		CRTC_DATA = 0x3D5
-	};
+typedef enum
+{
+	CURSOR_H = 14,
+	CURSOR_L
+} vga_register_t;
 
-	enum register_t : uint8_t {
-		CURSOR_H = 14,
-		CURSOR_L
-	};
+uint8_t vga_read_reg(vga_register_t reg);
+void vga_write_reg(vga_register_t reg, uint8_t value);
 
-	uint8_t read(register_t reg);
-	void write(register_t reg, uint8_t value);
+int vga_get_cursor();
+void vga_set_cursor(int cursor);
 
-} // namespace vga::registers
-
-namespace cursor {
-	int get();
-	void set(int cursor);
-
-} // namespace vga::cursor
-
-void clear(attribute_t attr = default_color);
+void vga_clear(vga_attribute_t attr);
 
 int puts(const char *str);
 int putc(char c);
-
-} // namespace vga
 
 #endif // VGA_H

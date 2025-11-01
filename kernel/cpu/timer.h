@@ -1,16 +1,10 @@
 #ifndef TIMER_H
 #define TIMER_H
 
-#include <cstdint>
+#include <stdint.h>
 
-namespace timer {
+#define BASE_CLOCK 1193182
 
-
-inline constexpr uint32_t BASE_CLOCK = 1193182;
-
-void init(volatile uint32_t freq);
-
-
-} // namespace timer
+void timer_init(volatile uint32_t freq);
 
 #endif
