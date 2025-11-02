@@ -44,14 +44,6 @@ _start:
 	or eax, 0x1
 	mov cr0, eax
 
-	; load segments
-	mov ax, GDT_DATA
-	mov ds, ax
-	mov ss, ax
-	mov es, ax
-	mov fs, ax
-	mov gs, ax
-
 	; jump to kernel
 	jmp GDT_CODE:KERNEL_OFFSET
 

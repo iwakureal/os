@@ -13,7 +13,7 @@ typedef struct __attribute__((packed))  {
 typedef struct  __attribute__((packed)) {
 	uint16_t offset_low;
 	uint16_t selector;
-	uint8_t : 8; /* reserved */
+	uint8_t zero;
 	uint8_t flags;
 	uint16_t offset_high;
 } idt_gate_t;

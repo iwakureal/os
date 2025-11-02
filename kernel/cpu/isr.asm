@@ -15,6 +15,11 @@ isr_%1:
 
 isr_common_entry:
 	pusha
+
+	[extern isr_handlers]
+	mov ecx, [esp + 32]
+	mov ebx, [isr_handlers + ecx * 4]
+
 	mov ax, ds
 	push eax
 	mov ax, 0x10
@@ -24,8 +29,7 @@ isr_common_entry:
 	mov gs, ax
 
 	cld
-	[extern default_handler]
-	call default_handler
+	call ebx
 
 	pop eax
 	mov ds, ax
@@ -41,7 +45,7 @@ stub_table:
 
 	%assign i 0
 	%rep 256
-		dd isr_%+i
+	dd isr_%+i
 		%assign i i+1
 	%endrep
 

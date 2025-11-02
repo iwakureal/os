@@ -11,16 +11,17 @@ NASM = nasm
 LD = ld
 
 QEMU = qemu-system-i386
+QEMU_FLAGS = -hda $< -boot c -audiodev pa,id=speaker -machine pcspk-audiodev=speaker
 
 IMAGE_SIZE = 1048576
 
 all: os.img kernel.elf
 
 run: os.img
-	$(QEMU) -hda $< -boot c -d int,nochain -monitor stdio
+	$(QEMU) $(QEMU_FLAGS) -d int,nochain -monitor stdio
 
 debug: os.img kernel.elf
-	$(QEMU) -S -s -hda $< -boot c -d guest_errors,int &
+	$(QEMU) $(QEMU_FLAGS) -S -s -d guest_errors,int &
 	gdb -ex "target remote localhost:1234" -ex "symbol-file kernel.elf"
 
 os.img: boot.bin kernel.bin

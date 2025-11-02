@@ -84,16 +84,6 @@ void remap_pics()
 	io_wait();
 }
 
-void isr_init()
-{
-	for (int i = 0; i < 256; i++)
-	{
-		idt_set_gate(i, stub_table[i]);
-	}
-
-	remap_pics();
-}
-
 void default_handler(stack_frame_t frame)
 {
 	int id = frame.int_num;
@@ -115,4 +105,15 @@ void default_handler(stack_frame_t frame)
 		puts("<unknown>");
 	}
 	puts("\n");
+}
+
+isr_handler_t isr_handlers[256] = {[0 ... 255] = default_handler};
+
+void isr_init()
+{
+	for (int i = 0; i < 256; i++)
+	{
+		idt_set_gate(i, stub_table[i]);
+	}
+	remap_pics();
 }
