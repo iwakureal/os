@@ -16,6 +16,10 @@ extern uint32_t stub_table[];
 typedef void (*isr_handler_t)(stack_frame_t);
 extern isr_handler_t isr_handlers[256];
 
+inline void _hlt() {
+	asm volatile ("hlt");
+}
+
 void isr_init();
 
 #endif /* ISR_H */

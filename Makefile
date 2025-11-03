@@ -15,10 +15,11 @@ QEMU_FLAGS = -hda $< -boot c -audiodev pa,id=speaker -machine pcspk-audiodev=spe
 
 IMAGE_SIZE = 1048576
 
-all: os.img kernel.elf
+all: os.img
 
 run: os.img
 	$(QEMU) $(QEMU_FLAGS) -monitor stdio
+	@echo
 
 debug: os.img kernel.elf
 	$(QEMU) $(QEMU_FLAGS) -S -s -d guest_errors,int &
@@ -44,4 +45,4 @@ kernel.elf: $(KERNEL_OBJECTS)
 	$(NASM) -o $@ -f elf32 -g $<
 
 clean:
-	rm -rf $(BOOT_OBJECTS) $(KERNEL_OBJECTS) *.img *.bin *.elf
+	find . -type f \( -name "*.o" -o -name "*.oo" -o -name "*.elf" -o -name "*.bin" -o -name "*.img" \) -delete

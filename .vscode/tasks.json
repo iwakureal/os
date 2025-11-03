@@ -1,0 +1,12 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "(qemu) Launch",
+            "type": "shell",
+            "linux" : {
+                "command": "qemu-system-i386 -S -s -hda os.img -boot c -m 512 -audiodev pa,id=speaker -machine pcspk-audiodev=speaker -daemonize"
+            }
+        }
+    ]
+}

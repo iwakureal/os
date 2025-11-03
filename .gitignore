@@ -1,8 +1,16 @@
 # Prerequisites
 *.d
 
-# vscode stuff
-.vscode/
+# vscode
+.vscode/*
+
+# exceptions
+!.vscode/launch.json
+!.vscode/tasks.json
+
+# exceptions
+!.vscode/launch.json
+!.vscode/tasks.json
 
 # Compiled Object files
 *.slo

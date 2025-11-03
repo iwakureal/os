@@ -5,6 +5,11 @@
 
 #define TEXT_MEMORY 0xB8000
 
+#define VGA_COLS 80
+#define VGA_ROWS 25
+#define VGA_TOTAL VGA_COLS * VGA_ROWS
+#define VGA_OFFSET(col, row) VGA_COLS * row + col
+
 typedef enum
 {
 	black,
@@ -55,8 +60,8 @@ typedef enum
 uint8_t vga_read_reg(vga_register_t reg);
 void vga_write_reg(vga_register_t reg, uint8_t value);
 
-int vga_get_cursor();
-void vga_set_cursor(int cursor);
+uint16_t vga_get_cursor();
+void vga_set_cursor(uint16_t cursor);
 
 void vga_clear(vga_attribute_t attr);
 
