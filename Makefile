@@ -18,7 +18,7 @@ IMAGE_SIZE = 1048576
 all: os.img kernel.elf
 
 run: os.img
-	$(QEMU) $(QEMU_FLAGS) -d int,nochain -monitor stdio
+	$(QEMU) $(QEMU_FLAGS) -monitor stdio
 
 debug: os.img kernel.elf
 	$(QEMU) $(QEMU_FLAGS) -S -s -d guest_errors,int &

@@ -90,9 +90,6 @@ void default_handler(stack_frame_t frame)
 	puts("!!! Received interrupt: ");
 	if (id >= 32 && id < 48)
 	{
-		if (id >= 40)
-			outb(0xA0, 0x20);
-		outb(0x20, 0x20);
 		puts("[IRQ] ");
 	}
 

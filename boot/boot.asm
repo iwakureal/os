@@ -27,9 +27,9 @@ _start:
 	jc error
 
 	; lets create mode info table
-	mov ax, 0x4f00
-	mov di, 0x7e00
-	int 10h
+	;mov ax, 0x4f00
+	;mov di, 0x7e00
+	;int 10h
 
 	; load gdt
 	lgdt [gdt_descriptor]

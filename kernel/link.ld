@@ -8,18 +8,24 @@ SECTIONS {
 	}		
 
 	.text : {
-		*(.text)
-	}
-
-	.data : {
-		*(.data)
+		*(.text*)
 	}
 
 	.rodata : {
-		*(.rodata)
+		*(.rodata*)
+	}
+
+	.data : {
+		*(.data*)
 	}
 
 	.bss : {
-		*(.bss)
+		*(.bss*)
+		*(COMMON)
+	}
+
+	/DISCARD/ : {
+		*(.eh_frame)
+		*(.comment)
 	}
 }
