@@ -7,20 +7,28 @@
 #include "cpu/io.h"
 #include "lib/std.h"
 
-char scan_buf[30];
+static void tone(uint32_t nFrequence) {
+	uint32_t Div;
+	uint8_t tmp;
 
+	Div = 1193180 / nFrequence;
+	outb(0x43, 0xb6);
+	outb(0x42, (uint8_t) (Div) );
+	outb(0x42, (uint8_t) (Div >> 8));
 
+	tmp = inb(0x61);
+	if (tmp != (tmp | 3)) {
+		outb(0x61, tmp | 3);
+	}
+}
+
+static void shut_up() {
+	uint8_t tmp = inb(0x61) & 0xFC;
+	outb(0x61, tmp);
+}
 
 void on_keyboard(stack_frame_t frame) {
-	uint8_t scancode = inb(0x60);
-	puts("!!! Keyboard scancode: ");
-	if (scancode == 0xE0) {
-		scancode = inb(0x60);
-		puts("0xE0 + ");
-	}
-	puts("0x");
-	puts(itoa(scancode, scan_buf, 16));
-	putc('\n');
+	outb(0x64, 0xFE);
 }
 
 void kmain()
@@ -34,10 +42,13 @@ void kmain()
 	isr_init();
 	lidt(&desc);
 	timer_init(1193);
-	isr_handlers[33] = on_keyboard;
+	isr_handlers[0x21] = on_keyboard;
 	asm("sti");
 
 	puts("\x02 Finished IDT setup!\n");
-	sleep(5000);
-	puts("sleep(5000) completed\n");
+	tone(880);
+	sleep(75);
+	tone(1397);
+	sleep(75);
+	shut_up();
 }

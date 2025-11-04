@@ -49,7 +49,7 @@ typedef enum
 {
 	CRTC_INDEX = 0x3D4,
 	CRTC_DATA = 0x3D5
-} io_t;
+} vga_io_t;
 
 typedef enum
 {

@@ -1,6 +1,7 @@
 #include "isr.h"
 
 #include <stdint.h>
+#include "lib/std.h"
 #include "cpu/io.h"
 #include "cpu/idt.h"
 #include "drivers/vga.h"
@@ -84,24 +85,28 @@ void remap_pics()
 	io_wait();
 }
 
-void default_handler(stack_frame_t frame)
+void isr_common(stack_frame_t frame)
 {
-	int id = frame.int_num;
-	puts("!!! Received interrupt: ");
+	uint32_t id = frame.int_num;
 	if (id >= 32 && id < 48)
 	{
-		puts("[IRQ] ");
+		if (id >= 40) outb(0xA0, 0x20);
+		outb(0x20, 0x20);
 	}
+	isr_handlers[id](frame);
+}
 
-	if (id < 48)
-	{
+static void default_handler(stack_frame_t frame) {
+	uint32_t id = frame.int_num;
+	char buffer[5];
+	puts("[int 0x");
+	puts(itoa(id, buffer, 16));
+	putc(' ');
+	if (id < 48) {
 		puts(exceptions[id]);
+		if (id >= 32) puts(" IRQ");
 	}
-	else
-	{
-		puts("<unknown>");
-	}
-	puts("\n");
+	puts("] Not handled\n");
 }
 
 isr_handler_t isr_handlers[256] = {[0 ... 255] = default_handler};
