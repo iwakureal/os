@@ -54,7 +54,6 @@ void kmain()
 	shut_up();
 
 	char pci_buf[11];
-	pci_config cfg = {true, 0, 0, 0, 0};
-	puts(itoa(pci_read(cfg), pci_buf, 16));
+	puts(itoa(pci_read(0, 0, 0, 0), pci_buf, 16));
 
 }

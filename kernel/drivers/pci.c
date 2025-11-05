@@ -2,7 +2,6 @@
 #include "cpu/io.h"
 
 uint16_t pci_read(uint8_t bus, uint8_t device, uint8_t func, uint8_t offset) {
-	uint32_t address;
 	uint32_t lbus  = (uint32_t)bus;
 	uint32_t ldev = (uint32_t)device;
 	uint32_t lfunc = (uint32_t)func;

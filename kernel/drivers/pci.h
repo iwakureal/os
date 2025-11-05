@@ -2,7 +2,6 @@
 #define PCI_H
 
 #include <stdint.h>
-#include <stdbool.h>
 
 #define PCI_CONFIG_ADDR 0xCF8
 #define PCI_CONFIG_DATA 0xCFC
