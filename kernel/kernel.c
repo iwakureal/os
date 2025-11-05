@@ -6,6 +6,7 @@
 #include "cpu/timer.h"
 #include "cpu/io.h"
 #include "lib/std.h"
+#include "drivers/pci.h"
 
 static void tone(uint32_t nFrequence) {
 	uint32_t Div;
@@ -51,4 +52,9 @@ void kmain()
 	tone(1397);
 	sleep(75);
 	shut_up();
+
+	char pci_buf[11];
+	pci_config cfg = {true, 0, 0, 0, 0};
+	puts(itoa(pci_read(cfg), pci_buf, 16));
+
 }
