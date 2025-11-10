@@ -30,9 +30,9 @@ static void shut_up() {
 
 uint8_t bus = 0, device = 0, function = 0;
 uint8_t update_count() {
-	function++;
+	function = (function + 1) % 8;
 	if (function == 0) {
-		device++;
+		device = (device + 1) % 32;
 		if (device == 0) {
 			bus++;
 			if (bus == 0) {
