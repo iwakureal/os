@@ -80,6 +80,7 @@ int putc(char c)
 		break;
 	default:
 		text_memory[offset].character = c;
+		text_memory[offset].attribute = vga_default_color;
 		offset++;
 	}
 
@@ -88,6 +89,7 @@ int putc(char c)
 		offset -= VGA_COLS;
 	}
 
+	text_memory[offset].attribute = vga_default_color;
 	vga_set_cursor(offset);
 	return offset;
 }

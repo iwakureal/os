@@ -2,6 +2,7 @@
 #define ISR_H
 
 #include <stdint.h>
+#include <stdbool.h>
 
 typedef struct __attribute__((packed))
 {
@@ -21,5 +22,6 @@ inline void _hlt() {
 }
 
 void isr_init();
+void irq_mask(uint8_t irq_line, bool masking);
 
 #endif /* ISR_H */

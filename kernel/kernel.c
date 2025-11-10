@@ -1,5 +1,5 @@
 #include <stdint.h>
-
+#include <stdbool.h>
 #include "drivers/vga.h"
 #include "cpu/idt.h"
 #include "cpu/isr.h"
@@ -28,14 +28,48 @@ static void shut_up() {
 	outb(0x61, tmp);
 }
 
+uint8_t bus = 0, device = 0, function = 0;
+uint8_t update_count() {
+	function++;
+	if (function == 0) {
+		device++;
+		if (device == 0) {
+			bus++;
+			if (bus == 0) {
+				puts("Back to 0!\n\n");
+				return 1;
+			}
+		}
+	}
+	return 0;
+}
+
 void on_keyboard(stack_frame_t frame) {
-	outb(0x64, 0xFE);
+	if (inb(0x60) > 57) return;
+	while (pci_read(bus, device, function, 0) == 0xFFFF) {
+		if (update_count() == 1) break;
+	}
+
+	char buf[11];
+	puts("Bus ");
+	puts(itoa(bus, buf, 10));
+	puts(", device ");
+	puts(itoa(device, buf, 10));
+	puts(", function ");
+	puts(itoa(function, buf, 10));
+	puts(": ");
+	for (int reg = 0; reg < 256; reg += 2) {
+		puts(itoa(pci_read(bus, device, function, reg), buf, 16));
+		putc(' ');
+	}
+	puts("\n\n");
+	update_count();
 }
 
 void kmain()
 {
 	vga_default_color = (vga_attribute_t){light_green, black};
-	vga_clear(vga_default_color);
+//	vga_clear(vga_default_color);
 	puts("Hello, world!\n");
 
 	idt_descriptor_t desc = {sizeof(idt) - 1, (uint32_t)&idt};
@@ -43,7 +77,8 @@ void kmain()
 	isr_init();
 	lidt(&desc);
 	timer_init(1193);
-	isr_handlers[0x21] = on_keyboard;
+	isr_handlers[33] = on_keyboard;
+	irq_mask(11, true);
 	asm("sti");
 
 	puts("\x02 Finished IDT setup!\n");
@@ -53,7 +88,6 @@ void kmain()
 	sleep(75);
 	shut_up();
 
-	char pci_buf[11];
-	puts(itoa(pci_read(0, 0, 0, 0), pci_buf, 16));
+	puts("Press any key to scroll PCI devices\n");
 
 }

@@ -3,7 +3,7 @@
 
 [global kentry]
 kentry:
-	mov esp, 0x7e00
+	mov esp, 0xF00000
 	mov ax, 0x10
 	mov ds, ax
 	mov ss, ax

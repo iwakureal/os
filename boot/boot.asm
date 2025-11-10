@@ -3,15 +3,22 @@
 	KERNEL_OFFSET equ 0x8000
 
 _start:
+	jmp real_start
+times 62 db 0
+real_start:
 	cli
 
-	mov ax, cs
-	mov ds, ax
-
 	xor ax, ax
+	mov ds, ax
+	mov es, ax
+	mov fs, ax
+	mov gs, ax
 	mov ss, ax
 	mov sp, 0x7c00
 	mov bp, sp
+
+	mov si, boot_msg
+	call puts16
 
 	cld
 	mov ah, 0x2
@@ -26,6 +33,9 @@ _start:
 	int 13h
 	jc error
 
+	mov si, disk_msg
+	call puts16
+
 	; lets create mode info table
 	;mov ax, 0x4f00
 	;mov di, 0x7e00
@@ -39,6 +49,9 @@ _start:
 	or al, 2
 	out 0x92, al
 
+	mov si, leave_msg
+	call puts16
+
 	; enable protected mode
 	mov eax, cr0
 	or eax, 0x1
@@ -48,10 +61,28 @@ _start:
 	jmp GDT_CODE:KERNEL_OFFSET
 
 error:
-	mov ah, 0x0e
-	mov al, 'D'
-	int 0x10
+	mov si, disk_err_msg
+	call puts16
 	jmp $
+
+boot_msg: db "Booting kernel...", 0x0a, 0x0d, 0
+disk_msg: db "Read disk, setting up protected mode...", 0x0a, 0x0d, 0
+leave_msg: db "Goodbye real mode!", 0x0a, 0x0d, 0
+
+disk_err_msg: db "The disk could not be read.", 0
+
+puts16:
+	pusha
+	mov ah, 0x0e
+.loop:
+	lodsb
+	test al, al
+	jz .done
+	int 0x10
+	jmp .loop
+.done:
+	popa
+	ret
 
 gdt_descriptor:
 	dw gdt_end - gdt - 1	; gdt size - 1

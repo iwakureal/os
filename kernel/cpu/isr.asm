@@ -27,7 +27,7 @@ isr_common_entry:
 	[extern isr_common]
 	cld
 	call isr_common
-
+this_is_a_problem:
 	pop eax
 	mov ds, ax
 	mov es, ax

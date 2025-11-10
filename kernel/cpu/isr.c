@@ -1,6 +1,7 @@
 #include "isr.h"
 
 #include <stdint.h>
+#include <stdbool.h>
 #include "lib/std.h"
 #include "cpu/io.h"
 #include "cpu/idt.h"
@@ -83,6 +84,23 @@ void remap_pics()
 	io_wait();
 	outb(0xA1, 0x00);
 	io_wait();
+}
+
+void irq_mask(uint8_t irq_line, bool masking) {
+	uint16_t pic_port = 0x21;
+	if (irq_line >= 8) {
+		pic_port = 0xA1;
+		irq_line -= 8;
+	}
+
+	uint8_t mask = inb(pic_port);
+	if (masking) {
+		mask &= ~(1 << irq_line);
+	} else {
+		mask |= 1 << irq_line;
+	}
+
+	outb(pic_port, mask);
 }
 
 void isr_common(stack_frame_t frame)
