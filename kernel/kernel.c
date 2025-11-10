@@ -36,7 +36,9 @@ uint8_t update_count() {
 		if (device == 0) {
 			bus++;
 			if (bus == 0) {
+				tone(500);
 				puts("Back to 0!\n\n");
+				shut_up();
 				return 1;
 			}
 		}
@@ -46,10 +48,15 @@ uint8_t update_count() {
 
 void on_keyboard(stack_frame_t frame) {
 	if (inb(0x60) > 57) return;
+	tone(440);
 	while (pci_read(bus, device, function, 0) == 0xFFFF) {
-		if (update_count() == 1) break;
+		inb(0x60);
+		if (update_count() == 1) {
+			shut_up();
+			break;
+		}
 	}
-
+	tone(440);
 	char buf[11];
 	puts("Bus ");
 	puts(itoa(bus, buf, 10));
@@ -63,6 +70,7 @@ void on_keyboard(stack_frame_t frame) {
 		putc(' ');
 	}
 	puts("\n\n");
+	shut_up();
 	update_count();
 }
 

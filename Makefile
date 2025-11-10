@@ -11,7 +11,7 @@ NASM = nasm
 LD = ld
 
 QEMU = qemu-system-i386
-QEMU_FLAGS = -hda $< -boot c --enable-kvm -cpu host -vga virtio -audiodev pa,id=speaker -machine pcspk-audiodev=speaker
+QEMU_FLAGS = -hda $< -boot c --enable-kvm -cpu host -vga virtio -audiodev pa,id=speaker -device ich9-intel-hda -machine pcspk-audiodev=speaker
 
 IMAGE_SIZE = 1048576
 
