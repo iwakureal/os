@@ -1,2 +1,4 @@
 # bare bones osdev project
-c++ is hard
+x86 is hard and so is osdev
+
+![qemu screenshot](images/preview.jpg)

@@ -1,20 +1,27 @@
 #ifndef ISR_H
 #define ISR_H
 
-#include <cstdint>
+#include <stdint.h>
+#include <stdbool.h>
 
-namespace isr {
+typedef struct __attribute__((packed))
+{
+	uint32_t ds;										 /* we pushed this */
+	uint32_t edi, esi, ebp, useless, ebx, edx, ecx, eax; /* pusha */
+	uint32_t int_num, error_code;						 /* have to push manually */
+	uint32_t eip, cs, eflags, esp, ss;					 /* cpu pushes for interrupt */
+} stack_frame_t;
 
-struct frame_t {
-	uint32_t eip;
-	uint32_t cs;
-	uint32_t eflags;
-};
+extern uint32_t stub_table[];
 
-void init_default();
-void default_handler(frame_t* frame);
+typedef void (*isr_handler_t)(stack_frame_t);
+extern isr_handler_t isr_handlers[256];
 
+inline void _hlt() {
+	asm volatile ("hlt");
+}
 
-} /* namespace isr */
+void isr_init();
+void irq_mask(uint8_t irq_line, bool masking);
 
 #endif /* ISR_H */
