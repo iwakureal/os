@@ -86,7 +86,7 @@ void kmain()
 	lidt(&desc);
 	timer_init(1193);
 	isr_handlers[33] = on_keyboard;
-	irq_mask(11, true);
+	irq_mask(11, true); // please stfu xhci
 	asm("sti");
 
 	puts("\x02 Finished IDT setup!\n");

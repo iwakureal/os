@@ -95,9 +95,9 @@ void irq_mask(uint8_t irq_line, bool masking) {
 
 	uint8_t mask = inb(pic_port);
 	if (masking) {
-		mask &= ~(1 << irq_line);
-	} else {
 		mask |= 1 << irq_line;
+	} else {
+		mask &= ~(1 << irq_line);
 	}
 
 	outb(pic_port, mask);
