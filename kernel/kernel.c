@@ -36,9 +36,6 @@ uint8_t update_count() {
 		if (device == 0) {
 			bus++;
 			if (bus == 0) {
-				tone(500);
-				puts("Back to 0!\n\n");
-				shut_up();
 				return 1;
 			}
 		}
@@ -52,7 +49,8 @@ void on_keyboard(stack_frame_t frame) {
 	while (pci_read(bus, device, function, 0) == 0xFFFF) {
 		inb(0x60);
 		if (update_count() == 1) {
-			shut_up();
+			tone(500);
+			puts("Back to 0!\n\n");
 			break;
 		}
 	}
